@@ -3,6 +3,7 @@ import asyncio
 import json
 import logging
 import subprocess
+from subprocess import PIPE
 from datetime import datetime
 from functools import partial
 from os import remove, environ
@@ -29,7 +30,7 @@ logger.addHandler(ch)
 def count_gpus():
     try:
         num = len(subprocess.run(
-            ["nvidia-smi", "-L"], capture_output=True).stdout.decode('ascii').strip().split("\n"))
+            ["nvidia-smi", "-L"], stdout=PIPE, stderr=PIPE).stdout.decode('ascii').strip().split("\n"))
         return num
     except Exception as e:
         raise e
